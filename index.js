@@ -19,7 +19,7 @@ app.use(express.json());
 app.use(
   cors({
     // FIXED: Removed '/login' path to match the base origin required by browsers
-    origin: 'https://vercel.app',
+    origin: 'https://internship-portal-react.vercel.app',
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization']
