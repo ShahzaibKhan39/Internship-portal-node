@@ -18,8 +18,11 @@ const PORT = process.env.PORT || 5000;
 app.use(express.json());
 app.use(
   cors({
-    origin:'https://internship-portal-react.vercel.app/login',
-    credentials: true
+    // FIXED: Removed '/login' path to match the base origin required by browsers
+    origin: 'https://vercel.app',
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
   })
 );
 
