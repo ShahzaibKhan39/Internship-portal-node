@@ -14,14 +14,27 @@ const applicationRouter = require('./Routes/Application');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+// Allowed Origins Array (handles environment variable + fallback defaults)
+const allowedOrigins = [
+  'https://internship-portal-react.vercel.app',
+  'http://localhost:5173',
+  process.env.FRONTEND_URL
+].filter(Boolean);
+
 // Middleware Setup
 app.use(express.json());
 app.use(
   cors({
-    // FIXED: Removed '/login' path to match the base origin required by browsers
-    origin: `process.env.FRONTEND_URL`,
+    origin: function (origin, callback) {
+      // Allow requests with no origin (e.g. mobile apps, Postman, curl)
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+      return callback(new Error(`CORS Policy Error: Origin ${origin} not allowed`));
+    },
     credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization']
   })
 );
